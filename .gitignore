@@ -1,0 +1,31 @@
+# NOTE: this file ships to every project that clones the template, so it must be
+# correct for DOWNSTREAM use — where session summaries and guides are meant to be
+# committed. That's the whole point of keeping records. Only genuinely transient or
+# machine-local things belong here.
+
+# --- Transient by design -------------------------------------------------
+# Plan-mode working artifacts. Disposable once the work lands; the durable
+# version graduates to docs/ as a guide.
+plans/*
+!plans/README.md
+
+tmp/*
+!tmp/README.md
+
+# --- Machine-local -------------------------------------------------------
+# Resolved paths, tokens, per-developer permissions.
+settings.local.json
+.claude/settings.local.json
+
+# --- Editor / OS ---------------------------------------------------------
+.idea/
+*.iml
+*.iws
+.vscode/
+.DS_Store
+Thumbs.db
+
+# --- This repo's own working area (not part of the shipped template) -----
+# Planning notes for building claude-template itself. Reference the private
+# source and must never be published.
+implementation-files/
