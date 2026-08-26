@@ -20,6 +20,5 @@
   "env": {
     "{{ENV_VAR_NAME}}": "{{ENV_VAR_VALUE}}"
   },
-  "includeCoAuthoredBy": true,
   "cleanupPeriodDays": 30
 }

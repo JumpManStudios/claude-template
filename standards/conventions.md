@@ -47,7 +47,9 @@ produces a document that reads like neither.
 
 ## `docs/` frontmatter
 
-Every file in `docs/` carries frontmatter, so the directory stays navigable without subdirectories:
+Every document in `docs/` carries frontmatter, so the directory stays navigable without
+subdirectories (`docs/README.md`, which describes the directory rather than living in it, is the
+one exception):
 
 ```yaml
 ---

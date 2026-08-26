@@ -11,7 +11,8 @@ done; docs record what's true and are maintained.
 docs/<descriptive-name>.md
 ```
 
-Every file carries frontmatter, which is what keeps this directory navigable without subdirectories:
+Every document here — this README aside — carries frontmatter, which is what keeps the directory
+navigable without subdirectories:
 
 ```yaml
 ---
