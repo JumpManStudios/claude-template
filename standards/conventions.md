@@ -1,6 +1,6 @@
 # Conventions
 
-Naming, lifecycle, and archiving rules for everything this template writes. Stated here once and
+Naming, lifecycle, and archiving rules for everything this workspace writes. Stated here once and
 referenced elsewhere — a rule that appears in two places will drift, so directory READMEs point
 here rather than restating.
 
