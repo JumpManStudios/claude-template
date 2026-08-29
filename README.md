@@ -1,7 +1,7 @@
 # coding-agent-workspace
 
-A portable operating layer for AI-assisted software development: project guidance, Agent Skills,
-session records, planning conventions, and durable documentation practices.
+An isolated, human-in-the-loop workspace for AI-assisted software development: project guidance,
+Agent Skills, session records, planning conventions, and durable documentation practices.
 
 This project began as `claude-template`, extracted from a private Claude Code workspace used in
 daily development. The useful part was not Claude-specific configuration; it was the discipline
@@ -9,9 +9,10 @@ around preserving decisions, handing work across sessions, and turning agent act
 durable record. The repository is now being generalized in place rather than split into separate
 host forks.
 
-Shared behavior has one canonical home in an isolated nested repository. Ignored root files and
-host directories project it through each coding assistant's native discovery paths, so the product
-repository stays free of skills, session records, and agent-specific configuration.
+The project is intentionally optimized for a developer working interactively with local coding
+agents. Shared behavior has one canonical home in an isolated nested repository. Ignored root
+files and host directories project it through each coding assistant's native discovery paths, so
+the product repository stays free of skills, session records, and agent-specific configuration.
 
 Sibling repository: [`fact-bank-resume-builder`](https://github.com/JumpManStudios/fact-bank-resume-builder)
 applies the same record-first approach to a job-search knowledge base and MCP workflow.
@@ -33,9 +34,11 @@ The repository can be named or stored anywhere. Installed adapters still have to
 documented discovery paths; a generic directory name does not replace `.claude/`, `.agents/`, or
 another host-specific configuration surface.
 
-These statuses describe local installations. Ignored adapter files are not present in a cloud
-agent's fresh product clone; cloud support requires committed adapters or environment setup and
-must be verified separately.
+These statuses describe local, human-in-the-loop installations. Cloud-agent compatibility is a
+different consumption model: the necessary instructions and adapters must be committed to the
+product repository or installed by its environment. See
+[Converting a project for cloud agents](docs/cloud-agent-conversion.md); this project does not
+currently claim verified cloud support.
 
 ## Why this exists
 
@@ -61,9 +64,10 @@ The repository has three layers:
 | Host adapters | Ignored root files and host directories link the core into native discovery paths; `adapters/` documents the wiring. |
 | Workspace outputs | `session-summaries/`, future weekly summaries, `plans/`, and `docs/` hold the records produced while working. |
 
-Relative symlinks are the primary projection mechanism because edits still land in the nested
-workspace repository. Copying is a documented fallback where links are unavailable, never a
-second source of truth. Adapters must not copy a workflow body merely to change invocation syntax.
+For the supported local model, relative symlinks are the primary projection mechanism because
+edits still land in the nested workspace repository. Copying is a documented fallback where links
+are unavailable, never a second source of truth. Adapters must not copy a workflow body merely to
+change invocation syntax.
 
 ## What's reusable
 
@@ -105,7 +109,7 @@ There is no parallel Claude command body to drift from the portable skill.
 
 ## Quickstart
 
-The recommended layout keeps all agent artifacts in a private nested repository. The root
+The recommended local layout keeps all agent artifacts in a private nested repository. The root
 instruction files and host directories are ignored projections, so editing the `AGENTS.md` symlink
 from the product root still changes the file tracked by the workspace repository:
 
@@ -125,6 +129,12 @@ See [SETUP.md](SETUP.md) for the complete Claude installation, alternate workspa
 copy fallback, verification steps, and migration from the former `.claude/` clone layout.
 The rationale and rejected alternatives are recorded in
 [docs/install-layout-analysis.md](docs/install-layout-analysis.md).
+
+Teams that want fresh clones, CI, or cloud agents to receive the same context can promote selected
+instructions and skills into the product repository. That conversion trades isolation for
+portability and should keep private session records and machine-local settings excluded. The
+[cloud-agent conversion guide](docs/cloud-agent-conversion.md) describes the boundary without
+presenting cloud execution as this repository's primary or verified workflow.
 
 ## Roadmap
 

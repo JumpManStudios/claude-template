@@ -44,7 +44,8 @@ Start Claude Code at the adopting project's root and confirm:
 - Invoking it writes to `.agent-workspace/session-summaries/`, not the product repository.
 - `.claude/settings.local.json`, when used, remains untracked.
 
-This ignored adapter model targets local coding-agent sessions. A cloud agent receives only files
-present in the product clone, so cloud use requires committed adapter files or environment setup
-that installs the workspace before the agent starts. Cloud support must be verified and claimed
-separately.
+This ignored adapter model targets local, human-in-the-loop coding sessions. A cloud agent receives
+only files present in the product clone, so cloud use requires committed adapter files or
+environment setup that installs the workspace before the agent starts. The
+[conversion guide](../../docs/cloud-agent-conversion.md) describes that boundary; cloud support
+must be verified and claimed separately.

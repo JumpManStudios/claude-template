@@ -1,4 +1,4 @@
-# Setup
+# Local setup
 
 The coding-agent workspace and the coding assistant's configuration are separate things:
 
@@ -7,8 +7,13 @@ The coding-agent workspace and the coding assistant's configuration are separate
 - A **host adapter** uses the assistant's required discovery paths to point back to that workspace.
 
 The instructions below install the workspace at `.agent-workspace/`, keep all agent artifacts out
-of the product repository's history, and enable Claude Code. Other locations work, but their
-adapter paths must be changed explicitly.
+of the product repository's history, and enable Claude Code for interactive, human-in-the-loop
+development. Other locations work, but their adapter paths must be changed explicitly.
+
+This ignored layout is not delivered to cloud agents in a fresh clone. If a project needs that
+behavior, first follow this setup to develop and validate the workspace, then use
+[docs/cloud-agent-conversion.md](docs/cloud-agent-conversion.md) to choose which non-private
+artifacts become part of the product repository.
 
 ## Choose how to store the workspace
 

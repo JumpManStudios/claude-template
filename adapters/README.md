@@ -30,13 +30,19 @@ Adapters move through three states in the compatibility matrix:
 Recognizing `AGENTS.md` or the Agent Skills format is compatibility evidence, not by itself a
 supported adapter.
 
-## Installation mechanism
+## Local installation mechanism
 
-The primary mechanism is a relative symlink from the product repository's ignored discovery path
-to the canonical file inside the nested workspace repository. This preserves one editable source:
-editing the projected file changes the tracked file in the workspace repository.
+For the local, human-in-the-loop consumption model, the primary mechanism is a relative symlink
+from the product repository's ignored discovery path to the canonical file inside the nested
+workspace repository. This preserves one editable source: editing the projected file changes the
+tracked file in the workspace repository.
 
 Copying is the compatibility fallback for systems where symlinks are unavailable. A copied file is
 not another source of truth; it must be copied back to the workspace after intentional edits and
 refreshed from the workspace after package updates. Generated adapters are not part of the current
-contract.
+local contract.
+
+Project-integrated or cloud use requires a different delivery mechanism because ignored links and
+their nested targets are absent from a fresh clone. Selected adapters may be committed or installed
+by the cloud environment, but that mode has separate privacy and verification requirements; see
+[the conversion guide](../docs/cloud-agent-conversion.md).

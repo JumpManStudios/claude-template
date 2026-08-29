@@ -5,14 +5,14 @@ date: 2026-08-29
 status: current
 ---
 
-# Isolated workspace and adapter projection model
+# Local workspace and adapter projection model
 
 ## Decision
 
-Install `coding-agent-workspace` as a nested Git repository, ignored by the product repository. Keep
-canonical instructions, skills, standards, templates, and generated records inside that nested
-repository. Project the files coding assistants must discover into the product root through ignored
-relative symlinks.
+For local, human-in-the-loop development, install `coding-agent-workspace` as a nested Git
+repository ignored by the product repository. Keep canonical instructions, skills, standards,
+templates, and generated records inside that nested repository. Project the files coding
+assistants must discover into the product root through ignored relative symlinks.
 
 The recommended local name is `.agent-workspace/`, but the name is configurable because every host
 adapter points to it explicitly.
@@ -30,7 +30,7 @@ product-repository/              # product Git ownership
 └── .claude/skills/              # ignored links to canonical skills
 ```
 
-Future adapters follow the same pattern with their own documented discovery paths.
+Future local adapters follow the same pattern with their documented discovery paths.
 
 ## Why this model
 
@@ -66,11 +66,13 @@ never canonical.
 Rejected because the directory is a Claude Code discovery and configuration surface. Other hosts
 do not treat `.claude/AGENTS.md` or `.claude/skills/` as their canonical project locations.
 
-### Commit all agent artifacts to the product repository
+### Commit selected agent artifacts to the product repository
 
-Rejected as the default because it changes the original ownership goal: private records and agent
-configuration would become product changes. A team may choose a committed-adapter mode later, but
-it is a different consumption mode and requires its own verification.
+Not selected for the local model because it changes the ownership goal: shared instructions and
+skills become project changes. It is nevertheless the appropriate starting point when teammates,
+CI, or cloud agents must receive the workspace from a fresh clone. Private records, credentials,
+and machine-local settings still should not be committed. The conversion is documented in
+[Converting a project for cloud agents](cloud-agent-conversion.md).
 
 ### Generate adapter files
 
@@ -85,6 +87,10 @@ adapters expose canonical skills; they do not rewrite them.
 ## Consequence for cloud agents
 
 Ignored files are absent from a fresh product clone. This model therefore supports local coding
-assistants first. Cloud agents require either committed adapter artifacts or environment setup that
-installs the nested workspace before the agent starts. A local verification result must not be used
-to claim cloud support.
+assistants first and deliberately favors close human review during execution. Cloud agents require
+either committed adapter artifacts or environment setup that installs the workspace before the
+agent starts. A local verification result must not be used to claim cloud support.
+
+This is a scope choice, not a claim that cloud agents are inferior or incompatible with the core.
+The portable content can be promoted into a project-integrated layout when that tradeoff is useful;
+the resulting cloud workflow must be tested independently.
