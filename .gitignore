@@ -25,7 +25,7 @@ settings.local.json
 .DS_Store
 Thumbs.db
 
-# --- This repo's own working area (not part of the shipped template) -----
-# Planning notes for building claude-template itself. Reference the private
+# --- This repo's own working area (not part of the shipped package) ------
+# Planning notes for building coding-agent-workspace itself. Reference the private
 # source and must never be published.
 implementation-files/

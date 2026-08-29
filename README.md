@@ -1,123 +1,142 @@
-# claude-template
+# coding-agent-workspace
 
-A drop-in Claude Code operating layer: slash commands, skills, and session-discipline
-conventions for any project.
+A portable operating layer for AI-assisted software development: project guidance, Agent Skills,
+session records, planning conventions, and durable documentation practices.
 
-This is the `.claude/` directory you wish every repo had. Clone it into a project and Claude Code
-gains a consistent way to handle the work that surrounds writing code — capturing a session,
-drafting a PR description, planning a task, reviewing a diff — plus the written standards that
-make those outputs uniform instead of improvised.
+This project began as `claude-template`, extracted from a private Claude Code workspace used in
+daily development. The useful part was not Claude-specific configuration; it was the discipline
+around preserving decisions, handing work across sessions, and turning agent activity into a
+durable record. The repository is now being generalized in place rather than split into separate
+host forks.
 
-It is deliberately **provider-neutral**: nothing assumes a particular issue tracker, CI system, or
-language. Where a concrete example helps, examples use GitHub.
+Shared behavior has one canonical home in an isolated nested repository. Ignored root files and
+host directories project it through each coding assistant's native discovery paths, so the product
+repository stays free of skills, session records, and agent-specific configuration.
 
-Sibling repo: [`fact-bank-resume-builder`](https://github.com/JumpManStudios/fact-bank-resume-builder)
-applies the same discipline to a job hunt. The two share conventions deliberately — if you like one,
-the other will feel familiar.
+Sibling repository: [`fact-bank-resume-builder`](https://github.com/JumpManStudios/fact-bank-resume-builder)
+applies the same record-first approach to a job-search knowledge base and MCP workflow.
+
+## Compatibility
+
+Common format support is not the same as tested integration. A host is marked supported only after
+its documented installation and a representative workflow pass in a clean project.
+
+| Host | Instructions | Skills | Local-install status |
+|---|---|---|---|
+| Claude Code | Thin `CLAUDE.md` imports projected `AGENTS.md` | `.claude/skills/` links | Implemented; clean-room verification pending in [#17](https://github.com/JumpManStudios/coding-agent-workspace/issues/17) |
+| Codex | Project-root `AGENTS.md` projection | `.agents/skills/` links | Planned in [#18](https://github.com/JumpManStudios/coding-agent-workspace/issues/18) |
+| Windsurf | Project-root `AGENTS.md` projection | `.windsurf/skills/` links | Planned in [#19](https://github.com/JumpManStudios/coding-agent-workspace/issues/19) |
+| Cursor | `AGENTS.md` | Agent Skills-compatible | Format-compatible; not verified |
+| GitHub Copilot | Surface-dependent instruction support | Agent Skills-compatible | Format-compatible; not verified |
+
+The repository can be named or stored anywhere. Installed adapters still have to use the host's
+documented discovery paths; a generic directory name does not replace `.claude/`, `.agents/`, or
+another host-specific configuration surface.
+
+These statuses describe local installations. Ignored adapter files are not present in a cloud
+agent's fresh product clone; cloud support requires committed adapters or environment setup and
+must be verified separately.
 
 ## Why this exists
 
-The hard part of working with an AI assistant isn't the code it writes, it's the amnesia. Every
-session starts cold. Decisions made on Tuesday are gone by Thursday, the reasoning behind them
-lives only in your head, and the assistant re-derives context you already paid for once.
+The hard part of working with a coding agent is not usually the code it writes. It is the loss of
+context between sessions: decisions disappear, rejected alternatives are re-explored, and the
+reasoning behind a change survives only in somebody's head.
 
-This repo is a bet that the fix is written discipline, not a better prompt:
-
-```
-work happens  →  capture it as a record  →  the record is context next session
-              →  roll records up weekly  →  you can answer "what did I actually do"
+```text
+work happens -> capture it as a record -> reuse that record as future context
+             -> roll records up       -> answer "what did I actually ship?"
 ```
 
-Two consequences fall out of that. Your assistant stops starting from zero, and you end up with a
-durable account of your own work — useful at review time, in a standup, or on a resume.
+The result is useful both to the next agent session and to the human who needs a standup update,
+review narrative, handoff, or evidence of completed work.
 
-## What's genuinely reusable here
+## Architecture
 
-- **The session-summary discipline** — the highest-value habit in the repo, and the cheapest. One
-  structured record per significant session, in a fixed shape, so it's greppable later and worth
-  feeding back as context.
-- **Skills over stuffed instructions** — the standards live in `skills/` and load when the work is
-  relevant, instead of sitting in `CLAUDE.md` taxing every turn. `CLAUDE.md` stays small on
-  purpose.
-- **The transient/durable split** — planning artifacts are disposable and gitignored; guides and
-  analyses are durable and committed. One boundary, applied consistently, replaces a pile of
-  "which directory does this go in" rules.
-- **Provider-neutral review and PR commands** — the review discipline without a specific tracker's
-  workflow baked in.
+The repository has three layers:
 
-## What you'll need to fill in yourself
+| Layer | Responsibility |
+|---|---|
+| Shared core | The nested workspace's `AGENTS.md`, `skills/`, `standards/`, and `templates/` define behavior once. |
+| Host adapters | Ignored root files and host directories link the core into native discovery paths; `adapters/` documents the wiring. |
+| Workspace outputs | `session-summaries/`, future weekly summaries, `plans/`, and `docs/` hold the records produced while working. |
 
-- The `{{PLACEHOLDER}}` blocks in `CLAUDE.md` — build and test commands, architecture notes,
-  conventions, platform gotchas. This is the one file that must be per-project.
-- Your own judgment on which discipline directories you'll actually use. Shipping all four and
-  using two is fine; the unused READMEs cost nothing.
-- `settings.example.json` → `settings.local.json`, with any machine-specific paths.
+Relative symlinks are the primary projection mechanism because edits still land in the nested
+workspace repository. Copying is a documented fallback where links are unavailable, never a
+second source of truth. Adapters must not copy a workflow body merely to change invocation syntax.
+
+## What's reusable
+
+- **Session-summary discipline:** one structured record per significant piece of work, written
+  close to the work and shaped for later retrieval.
+- **Agent Skills instead of stuffed instructions:** multi-step workflows load on demand while
+  always-on guidance stays short.
+- **Transient versus durable outputs:** plans are disposable; guides, analyses, and records are
+  retained according to explicit lifecycle rules.
+- **A core/adapter boundary:** portable behavior stays independent of host settings, permissions,
+  hooks, and tool names.
 
 ## Directory map
 
 | Path | What lives there |
 |---|---|
-| `CLAUDE.md` | Project instructions Claude reads every session. Deliberately short — durable facts and `{{PLACEHOLDER}}`s only, with workflow pushed into `skills/`. |
-| `commands/` | Slash commands — explicit "do this now" entry points. Thin by design: each carries frontmatter (`description`, `argument-hint`, `allowed-tools`) and defers detail to a skill or template. |
-| `skills/` | The standards, as skills that load on demand when the work is relevant rather than up front. This is where the substance is. |
-| `standards/conventions.md` | Naming, lifecycle, and archiving rules — stated **once**, referenced everywhere. |
-| `templates/` | The output shapes commands write against (session summary, weekly summary, guide, PR description). |
-| `session-summaries/` | One record per significant session. The workhorse. |
-| `weekly-summaries/` | Weekly rollups distilled from session summaries — the "what did I ship" view. |
-| `plans/` | **Transient.** Plan-mode working artifacts. Gitignored; delete freely once the work lands. |
-| `docs/` | **Durable.** Implementation guides and analyses, distinguished by a `type:` field rather than by separate directories. Committed and kept. |
-| `examples/` | Worked examples drawn from the public `fact-bank-resume-builder` repo, so every sample record points at real, inspectable work instead of a fictional placeholder. |
-| `settings.example.json` | Sanitized settings — copy to `settings.local.json` and fill in local paths. |
+| `AGENTS.md` | Canonical, provider-neutral project guidance tracked in the workspace repository. |
+| `CLAUDE.md` | Thin Claude entry point for developing this repository; imports `AGENTS.md`. |
+| `adapters/` | Host-specific discovery, configuration examples, installation notes, and verification steps. |
+| `skills/` | Canonical Agent Skills and their workflow bodies. |
+| `standards/conventions.md` | Naming, lifecycle, and archiving rules stated once. |
+| `templates/` | Output shapes used by canonical skills. |
+| `session-summaries/` | Append-only records for significant work. |
+| `plans/` | Transient planning artifacts; gitignored except for its README. |
+| `docs/` | Durable guides and analyses, committed and maintained. |
+| `examples/` | Worked public examples whose claims can be inspected. |
 
-The records are what make this work. A command that writes a session summary is only as useful as
-the standard defining what a session summary is *for* — the skills carry that, and they're the
-real content of this repo.
+## Current workflow
 
-## Workflow chain
+`session-summary` is the migration proof for the architecture. The canonical skill owns the full
+workflow and writes:
 
-```
-/session-summary          → session-summaries/YYYY-MM-DD-<slug>.md
-/end-task-session         → session summary + what's next
-/generate-weekly-summary  → weekly-summaries/week-of-<date>.md, archives the week
-/generate-pr-description  → PR body from the actual diff
-/standup-prep             → talking points from recent records
+```text
+session-summaries/YYYY-MM-DD-<slug>.md
 ```
 
-Five commands, deliberately. The private version this came from had seventeen — but most were
-built for one project's stack, tracker, and task board, and a command that only works in the repo
-it was born in doesn't belong in a template. What's here is what survives being dropped into a
-codebase it's never seen.
+When exposed through the Claude adapter, the skill is invoked directly as `/session-summary`.
+There is no parallel Claude command body to drift from the portable skill.
 
 ## Quickstart
 
-```bash
-# From your project root
-git clone https://github.com/JumpManStudios/claude-template .claude
-cd .claude
-git remote remove origin          # disconnect from the template
+The recommended layout keeps all agent artifacts in a private nested repository. The root
+instruction files and host directories are ignored projections, so editing the `AGENTS.md` symlink
+from the product root still changes the file tracked by the workspace repository:
+
+```text
+your-project/
+├── .agent-workspace/     # nested Git repository: canonical content + private records
+├── AGENTS.md             # ignored link -> .agent-workspace/AGENTS.md
+├── CLAUDE.md             # ignored thin Claude entry point
+├── .claude/              # ignored Claude discovery/settings adapter
+└── product source
 ```
 
-Then add `.claude/` to your project's `.gitignore` and wire up `CLAUDE.md`. Full instructions,
-including the three adoption modes and how to point the clone at your own workspace repo, are in
-[SETUP.md](SETUP.md).
+The product repository tracks none of those four paths. Its own status and history remain focused
+on product code, while improvements to guidance and records appear in `.agent-workspace` Git.
 
-## Status
+See [SETUP.md](SETUP.md) for the complete Claude installation, alternate workspace locations,
+copy fallback, verification steps, and migration from the former `.claude/` clone layout.
+The rationale and rejected alternatives are recorded in
+[docs/install-layout-analysis.md](docs/install-layout-analysis.md).
 
-Being assembled in phases from a private version that's been in daily use — genericized and
-modernized as it moves over, one focused change per phase.
+## Roadmap
 
-- [x] **Phase 1** — Scaffold, license, adoption docs
-- [ ] **Phase 2** — `CLAUDE.md` skeleton, `standards/conventions.md`, core discipline skills + commands
-  - Landed: `CLAUDE.md`, `standards/conventions.md`, and the session-summary slice.
-  - Outstanding: the weekly-summary slice, `end-task-session`, and `standup-prep`.
-- [ ] **Phase 3** — PR and review commands
-- [ ] **Phase 4** — Provider-neutral issue-tracker commands
-- [ ] **Phase 5** — Verification pass and `PACKAGE_CONTENTS.md`
+- [ ] [#17](https://github.com/JumpManStudios/coding-agent-workspace/issues/17) — provider-neutral core, Claude adapter, migration, and clean-room verification
+- [ ] [#18](https://github.com/JumpManStudios/coding-agent-workspace/issues/18) — Codex adapter and second-host proof
+- [ ] [#19](https://github.com/JumpManStudios/coding-agent-workspace/issues/19) — Windsurf adapter and third-host proof
+- [ ] Workflow slices — weekly summary, end-task session, standup preparation, and PR description
+- [ ] Final package inventory and supported-host publish gate
 
-Every path in the directory map above now exists except `weekly-summaries/`, which arrives with the
-weekly-summary slice. Existing is not the same as finished — several of those directories hold only
-a README describing what belongs in them. The checklist is where it actually stands.
+The project follows one rule as this list grows: **design from documented behavior; claim support
+only after clean-room verification.**
 
 ## License
 
-MIT — see [LICENSE](LICENSE). Use it, fork it, reshape it to your own practice.
+MIT — see [LICENSE](LICENSE). Use it, fork it, and reshape it to your own practice.

@@ -2,7 +2,7 @@
 
 One record per significant piece of work: what happened, what was decided, and what's still open.
 
-These are the workhorse of this template. Everything else — weekly rollups, status talking points,
+These are the workhorse of this workspace. Everything else — weekly rollups, status talking points,
 picking up where you left off — reads from here.
 
 ## Files
@@ -15,7 +15,8 @@ Naming, dating, and archiving rules: `standards/conventions.md`.
 What belongs in each section: the `session-summary` skill.
 Shape to fill in: `templates/session-summary-template.md`.
 
-Write one with `/session-summary`.
+Invoke the canonical `session-summary` skill. A supported host adapter may expose it as
+`/session-summary` or through another native invocation mechanism.
 
 ## The six sections
 
