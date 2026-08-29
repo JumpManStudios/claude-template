@@ -108,12 +108,15 @@ modernized as it moves over, one focused change per phase.
 
 - [x] **Phase 1** — Scaffold, license, adoption docs
 - [ ] **Phase 2** — `CLAUDE.md` skeleton, `standards/conventions.md`, core discipline skills + commands
+  - Landed: `CLAUDE.md`, `standards/conventions.md`, and the session-summary slice.
+  - Outstanding: the weekly-summary slice, `end-task-session`, and `standup-prep`.
 - [ ] **Phase 3** — PR and review commands
 - [ ] **Phase 4** — Provider-neutral issue-tracker commands
 - [ ] **Phase 5** — Verification pass and `PACKAGE_CONTENTS.md`
 
-Until Phase 2 lands, the directory map above is the target shape, not shipped files. The checklist
-is where it actually stands.
+Every path in the directory map above now exists except `weekly-summaries/`, which arrives with the
+weekly-summary slice. Existing is not the same as finished — several of those directories hold only
+a README describing what belongs in them. The checklist is where it actually stands.
 
 ## License
 

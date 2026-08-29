@@ -76,6 +76,13 @@ Skip this only if you're fine with the workspace being local-only and unbacked.
 
 ### Step 4 — Have the project ignore `.claude/`
 
+Step 1 left you inside `.claude/`. The remaining steps are relative to your **project root**, so
+go back up:
+
+```bash
+cd ..
+```
+
 Add to your **project's** `.gitignore` (not the one inside `.claude/`):
 
 ```gitignore
@@ -107,6 +114,31 @@ truth: edit there, copy out, commit in the workspace repo.
 
 Then fill in the `{{PLACEHOLDER}}` markers in `.claude/CLAUDE.md` for this project — build
 commands, test commands, architectural conventions, whatever Claude needs to not guess.
+
+### Step 6 — Local settings (optional)
+
+`settings.example.json` is a starting point, not a live config. Copy it and edit the copy — from
+your project root:
+
+```bash
+cp .claude/settings.example.json .claude/settings.local.json
+```
+
+`settings.local.json` is gitignored, which is where anything machine-specific belongs — resolved
+paths, per-developer permissions, tokens. The example file is committed, so it must stay free of
+all three.
+
+What to fill in or delete:
+
+| Key | What to do |
+|---|---|
+| `permissions.allow` | Read-only git commands, pre-approved so they don't prompt. Add your own; keep them read-only. |
+| `permissions.deny` | Paths Claude should never read. Extend for wherever this project keeps secrets. |
+| `permissions.additionalDirectories` | Replace `{{ABSOLUTE_PATH_TO_A_RELATED_REPO}}` with a real path, or **delete the key** — an unfilled placeholder points at a directory that doesn't exist. |
+| `env` | Replace the `{{ENV_VAR_NAME}}` pair with real variables, or **delete the key**. Values here are readable by anything reading the file, so put no secrets in it. |
+| `attribution` | Not in the example, so commits and PRs keep Claude Code's default attribution. Add it only if you want to change or hide the commit trailer or PR line — see the [settings reference](https://code.claude.com/docs/en/settings-reference). Don't reach for `includeCoAuthoredBy`; it's deprecated and `attribution` overrides it. |
+
+Skip this step entirely if the defaults suit you — Claude Code runs fine with no settings file.
 
 ---
 
