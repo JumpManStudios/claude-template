@@ -1,4 +1,4 @@
-# Plans
+  # Plans
 
 Working artifacts from plan mode: how to approach something, worked out before doing it.
 

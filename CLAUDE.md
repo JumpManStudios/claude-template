@@ -1,88 +1,30 @@
-<!--
-  This file is loaded into context at the start of every session, so every line is a
-  permanent cost paid on every turn — including turns it has nothing to do with.
+# Agentic Coding Interview
 
-  Keep it under ~120 lines. It holds facts that are true regardless of what you're
-  working on. Anything situational (how to write a summary, how to run a review) belongs
-  in skills/, which load only when relevant.
+## Working style
 
-  If this file starts growing sections describing multi-step processes, that's the signal
-  a skill is missing — not that the limit needs raising.
--->
+- Inspect before modifying.
+- Prefer the smallest change that satisfies the requirements.
+- Preserve existing architecture and conventions unless there is a concrete reason not to.
+- Surface ambiguous requirements before making business-rule assumptions.
+- Do not add dependencies unless the existing stack is insufficient; justify any new dependency first.
+- Review generated changes before accepting them.
+- Run the relevant tests after each meaningful change.
+- Before finishing, run the full test suite and summarize tradeoffs, edge cases, and anything left unresolved.
 
-# {{PROJECT_NAME}}
+## First step
 
-{{ONE_OR_TWO_SENTENCES: what this project is and who uses it}}
+When given a task:
 
-## Commands
+1. Read the task and inspect the repository.
+2. Do not modify files yet.
+3. Summarize:
+  - current architecture
+  - relevant files
+  - existing test coverage
+  - likely minimal implementation path
+  - ambiguities that need interviewer clarification
+4. Then wait for direction or proceed with an approved minimal plan.
 
-| Purpose | Command |
-|---|---|
-| Install dependencies | `{{INSTALL_COMMAND}}` |
-| Run locally | `{{RUN_COMMAND}}` |
-| Build | `{{BUILD_COMMAND}}` |
-| Test (all) | `{{TEST_COMMAND}}` |
-| Test (single file) | `{{TEST_SINGLE_FILE_COMMAND}}` |
-| Lint / format | `{{LINT_COMMAND}}` |
-| Type check | `{{TYPECHECK_COMMAND}}` |
+## Time-boxing
 
-Run `{{LINT_COMMAND}}` and `{{TEST_COMMAND}}` before declaring work finished.
-
-The single-file test command matters more than it looks: without it the whole suite gets run
-to check one change.
-
-## Architecture
-
-{{HOW_THE_PIECES_FIT: the 3-5 sentence version. Where a request enters, what handles it,
-where state lives, what talks to what. Enough that a reader knows which directory to open
-without exploring.}}
-
-| Path | What lives there |
-|---|---|
-| `{{PATH}}` | {{WHAT}} |
-| `{{PATH}}` | {{WHAT}} |
-| `{{PATH}}` | {{WHAT}} |
-
-## Conventions
-
-{{PROJECT_SPECIFIC_RULES. Only things a competent developer would get wrong without being
-told — not general good practice. Examples of the shape:
-- Which layer is allowed to talk to the database
-- The established pattern for a new endpoint, and an existing one to copy
-- Error handling: what gets thrown, what gets returned, what gets logged
-- Naming that differs from the language default}}
-
-### Patterns to follow
-
-{{POINT_AT_REAL_FILES: "New endpoints follow {{EXAMPLE_FILE}}." A concrete example beats a
-description of one.}}
-
-### Known traps
-
-{{THINGS_THAT_LOOK_WRONG_BUT_ARE_DELIBERATE, and things that look fine but break. This
-section repays itself faster than any other.}}
-
-## Environment
-
-- Platform: {{OS_AND_VERSION}}
-- Shell: {{SHELL}}
-- Runtime versions: {{LANGUAGE_AND_VERSION}}, {{PACKAGE_MANAGER_AND_VERSION}}
-
-{{PLATFORM_SPECIFIC_GOTCHAS: path separators, line endings, commands that differ from the
-docs, tools not on PATH. Leave empty rather than filling with generic advice.}}
-
-## Working agreements
-
-- **Conventions for records and documents:** `standards/conventions.md`. File naming, the
-  transient/durable split, `docs/` frontmatter, and archiving live there, not here.
-- **Skills:** `skills/` holds the process standards. They load when the work is relevant, so
-  don't restate them in this file.
-- **Plans** are transient and gitignored; **`docs/`** is durable and committed.
-- **Records are append-only.** Corrections go in the next record, not by editing an old one.
-
-## Do not put in this file
-
-- Step-by-step processes — those are skills.
-- Anything already obvious from the code. This file is for what the code can't tell you.
-- Rules stated in `standards/conventions.md`. One home per rule.
-- Rituals tied to a day or cadence. They cost context on every unrelated turn.
+This is a timed coding exercise. Avoid unnecessary documentation, broad refactors, or environment work unless they directly support the task.
