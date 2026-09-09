@@ -10,74 +10,66 @@
   a skill is missing — not that the limit needs raising.
 -->
 
-# {{PROJECT_NAME}}
+# generic-project-for-coding-agent-workspace
 
-{{ONE_OR_TWO_SENTENCES: what this project is and who uses it}}
+A minimal, non-code scaffold for starting a new project. It holds the project's own
+`CLAUDE.md` and onboarding docs at the root, and clones the reusable `coding-agent-workspace`
+template into `.claude/` as an independently-versioned, gitignored nested repo.
 
 ## Commands
 
+There is no application here — nothing to install, build, run, or test. The one action this
+repo exists to perform is bootstrapping the workspace:
+
 | Purpose | Command |
 |---|---|
-| Install dependencies | `{{INSTALL_COMMAND}}` |
-| Run locally | `{{RUN_COMMAND}}` |
-| Build | `{{BUILD_COMMAND}}` |
-| Test (all) | `{{TEST_COMMAND}}` |
-| Test (single file) | `{{TEST_SINGLE_FILE_COMMAND}}` |
-| Lint / format | `{{LINT_COMMAND}}` |
-| Type check | `{{TYPECHECK_COMMAND}}` |
-
-Run `{{LINT_COMMAND}}` and `{{TEST_COMMAND}}` before declaring work finished.
-
-The single-file test command matters more than it looks: without it the whole suite gets run
-to check one change.
+| Add the coding agent workspace | `git clone https://github.com/JumpManStudios/coding-agent-workspace .claude` — see `generic-project-setup/add-coding-agent-workspace.md` |
 
 ## Architecture
 
-{{HOW_THE_PIECES_FIT: the 3-5 sentence version. Where a request enters, what handles it,
-where state lives, what talks to what. Enough that a reader knows which directory to open
-without exploring.}}
+Two independent pieces, deliberately not merged:
+
+- **Root** — the actual project. `CLAUDE.md` (this file) plus `generic-project-setup/`, which
+  documents how to wire the workspace into a fresh clone of this scaffold.
+- **`.claude/`** — a nested clone of `coding-agent-workspace`, with its own `.git`. Gitignored
+  from this repo, so it never appears in `git status`/`git add` at the root. Claude Code
+  auto-discovers commands, skills, and settings from `.claude/` with no extra wiring.
 
 | Path | What lives there |
 |---|---|
-| `{{PATH}}` | {{WHAT}} |
-| `{{PATH}}` | {{WHAT}} |
-| `{{PATH}}` | {{WHAT}} |
+| `CLAUDE.md` | Project instructions Claude reads every session (this file). |
+| `generic-project-setup/` | Onboarding doc(s) for wiring `.claude/` into a fresh project. |
+| `.claude/` | Nested clone of `coding-agent-workspace` — commands, skills, standards, templates, session summaries. |
 
 ## Conventions
 
-{{PROJECT_SPECIFIC_RULES. Only things a competent developer would get wrong without being
-told — not general good practice. Examples of the shape:
-- Which layer is allowed to talk to the database
-- The established pattern for a new endpoint, and an existing one to copy
-- Error handling: what gets thrown, what gets returned, what gets logged
-- Naming that differs from the language default}}
-
-### Patterns to follow
-
-{{POINT_AT_REAL_FILES: "New endpoints follow {{EXAMPLE_FILE}}." A concrete example beats a
-description of one.}}
+- `.claude/CLAUDE.md` is a synced copy of this file, not an `@import` — the two are kept
+  byte-identical by hand. Edit here first, then copy this file over `.claude/CLAUDE.md` and
+  commit it on `.claude/`'s own branch. If they ever drift, this root copy wins, since that's
+  what Claude Code actually reads.
 
 ### Known traps
 
-{{THINGS_THAT_LOOK_WRONG_BUT_ARE_DELIBERATE, and things that look fine but break. This
-section repays itself faster than any other.}}
+- `.claude/` is **not** disconnected from `origin` the way `.claude/SETUP.md`'s "gitignored
+  clone" mode recommends — it's still `https://github.com/JumpManStudios/coding-agent-workspace`,
+  just checked out on a project-specific branch (`generic-project-claude`) instead of `main`.
+  Never commit project-specific content while on `main` inside `.claude/`.
+- The root `.gitignore` excludes `/.claude/` on purpose — its absence from `git status` at the
+  root is expected, not a sign something's missing.
 
 ## Environment
 
-- Platform: {{OS_AND_VERSION}}
-- Shell: {{SHELL}}
-- Runtime versions: {{LANGUAGE_AND_VERSION}}, {{PACKAGE_MANAGER_AND_VERSION}}
-
-{{PLATFORM_SPECIFIC_GOTCHAS: path separators, line endings, commands that differ from the
-docs, tools not on PATH. Leave empty rather than filling with generic advice.}}
+- Platform: macOS (Darwin 25.6.0)
+- Shell: zsh
+- Runtime versions: N/A — git and a POSIX shell are the only dependencies.
 
 ## Working agreements
 
-- **Conventions for records and documents:** `standards/conventions.md`. File naming, the
-  transient/durable split, `docs/` frontmatter, and archiving live there, not here.
-- **Skills:** `skills/` holds the process standards. They load when the work is relevant, so
-  don't restate them in this file.
-- **Plans** are transient and gitignored; **`docs/`** is durable and committed.
+- **Conventions for records and documents:** `.claude/standards/conventions.md`. File naming,
+  the transient/durable split, `docs/` frontmatter, and archiving live there, not here.
+- **Skills:** `.claude/skills/` holds the process standards. They load when the work is
+  relevant, so don't restate them in this file.
+- **Plans** are transient and gitignored; **`.claude/docs/`** is durable and committed.
 - **Records are append-only.** Corrections go in the next record, not by editing an old one.
 
 ## Do not put in this file
